@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <ImportGroup Label="PropertySheets">
+    <Import Project="msvc-common-begin.props" />
+  </ImportGroup>
+
+  <ItemGroup>
+    <ClInclude Include="dll.h"/>
+    <ClCompile Include="dll.cpp"/>
+  </ItemGroup>
+
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{1AD31049-26B0-4922-89CF-778040DFC51E}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>dll</RootNamespace>
+  </PropertyGroup>
+
+  <ImportGroup Label="PropertySheets">
+    <Import Project="msvc-target-dll.props" />
+  </ImportGroup>
+
+  <PropertyGroup>
+    <TargetName>dll</TargetName>
+  </PropertyGroup>
+
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <PreprocessorDefinitions>_DLL_IMPL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+
+  <ImportGroup Label="PropertySheets">
+    <Import Project="msvc-common-end.props" />
+  </ImportGroup>
+
+</Project>
