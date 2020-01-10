@@ -73,7 +73,6 @@ jobs:
   windows-msvc:
     name: Windows with VC++
     runs-on: windows-latest
-    shell: powershell
     steps:
     - uses: actions/checkout@master
     - name: install dependencies
