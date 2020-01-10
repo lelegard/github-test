@@ -78,13 +78,14 @@ jobs:
     - name: install dependencies
       run: |
         Get-Location
+        $NsisUrl = 'http://prdownloads.sourceforge.net/nsis/nsis-3.05-setup.exe?download'
         $ProgressPreference = 'SilentlyContinue'
-        Invoke-WebRequest -Uri "http://prdownloads.sourceforge.net/nsis/nsis-3.05-setup.exe?download" -OutFile nsis-setup.exe
-        Get-ChildItem
+        Invoke-WebRequest -Uri $NsisUrl -UserAgent Download -OutFile nsis-setup.exe
+        Get-ChildItem | Format-Table
         . .\nsis-setup.exe /S
-        Get-ChildItem "C:\Program Files (x86)\NSIS"
+        Get-ChildItem "C:\Program Files (x86)\NSIS" | Format-Table
         & dektec\Download-Install-Dtapi.ps1
-        Get-ChildItem "C:\Program Files (x86)\DekTec"
+        Get-ChildItem "C:\Program Files (x86)\DekTec" | Format-Table
     - name: build 64-bit
       run: src/Build.ps1 x64
     - name: build 32-bit
