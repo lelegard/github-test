@@ -80,6 +80,7 @@ function Exit-Script([string]$Message = "")
 $ProgressPreference = 'SilentlyContinue'
 
 # Get the HTML page for Dektec SDK downloads.
+Write-Output "Reading ${DektecUrl}"
 $status = 0
 $message = ""
 try {
