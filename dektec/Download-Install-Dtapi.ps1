@@ -165,8 +165,8 @@ if (-not $NoInstall) {
         }
     }
 
-    # Install new version.
-    . $DtapiSetup
+    # Install new version in silent mode.
+    . $DtapiSetup /S /v/qn
 }
 
 Exit-Script

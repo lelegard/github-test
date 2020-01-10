@@ -84,7 +84,7 @@ jobs:
         Get-ChildItem | Format-Table
         . .\nsis-setup.exe /S
         Get-ChildItem "C:\Program Files (x86)\NSIS" | Format-Table
-        dektec\Download-Install-Dtapi.ps1
+        dektec/Download-Install-Dtapi.ps1
         Get-ChildItem "C:\Program Files (x86)\DekTec" | Format-Table
     - name: build 64-bit
       run: src/Build.ps1 x64
