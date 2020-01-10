@@ -1,10 +1,6 @@
-name: Test CI
+name: CI
 
-# Trigger the workflow on push or pull request
-# on: [push, pull_request]
-
-# Trigger the workflow on push or pull request,
-# but only for the master branch
+# Trigger the workflow on push or pull request, for master branch only.
 on:
   push:
     branches:
@@ -19,10 +15,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
-    - name: build
+    - name: install dependencies
       run: |
-        echo "CC=$CC CXX=$CXX"
-        make -C src
+        sudo apt update
+        sudo apt install dos2unix curl tar libpcsclite-dev libcurl4 libcurl4-openssl-dev
+    - name: build
+      run: make -C src
     - name: test app
       run: src/Release-x86_64/app
     - name: test app_dll
@@ -36,10 +34,12 @@ jobs:
       CXX: clang++
     steps:
     - uses: actions/checkout@master
-    - name: build
+    - name: install dependencies
       run: |
-        echo "CC=$CC CXX=$CXX"
-        make -C src
+        sudo apt update
+        sudo apt install dos2unix curl tar libpcsclite-dev libcurl4 libcurl4-openssl-dev
+    - name: build
+      run: make -C src
     - name: test app
       run: src/Release-x86_64/app
     - name: test app_dll
@@ -53,10 +53,18 @@ jobs:
       CXX: clang++
     steps:
     - uses: actions/checkout@master
-    - name: build
+    - name: install dependencies
       run: |
-        echo "CC=$CC CXX=$CXX"
-        make -C src
+        brew update
+        brew install gnu-sed grep dos2unix pcsc-lite
+    - name: check dependencies
+      run: |
+        pwd
+        gsed --version
+        ggrep --version
+        dos2unix --version
+    - name: build
+      run: make -C src
     - name: test app
       run: src/Release-x86_64/app
     - name: test app_dll
