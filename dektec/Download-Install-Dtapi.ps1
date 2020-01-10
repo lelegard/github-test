@@ -98,6 +98,11 @@ if ($status -ne 1 -and $status -ne 2) {
     }
 }
 
+write-output "===== RESPONSE"
+$reponse
+write-output "===== RESPONSE PARSED HTML"
+$response.ParsedHtml
+ 
 # Parse HTML page to locate the WinSDK file.
 $sdk = $response.ParsedHtml.getElementsByTagName("a") | Where-Object { $_.href -like "*/WinSDK*.zip" } | Select-Object -First 1
 $sdkRef = $sdk.href -replace '^about:',''
