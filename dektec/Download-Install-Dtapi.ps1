@@ -54,6 +54,8 @@ param(
     [switch]$NoPause = $false
 )
 
+Write-Output "Dektec WinSDK download and installation procedure"
+
 $DektecUrl = "http://www.dektec.com/downloads/SDK/"
 $DtapiInstaller = "DekTec SDK - Windows Setup.exe"
 
