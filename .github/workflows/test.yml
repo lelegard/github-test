@@ -18,9 +18,11 @@ jobs:
     name: Linux with gcc
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@master
     - name: build
-      run: make -C src
+      run: |
+        echo "CC=$CC CXX=$CXX"
+        make -C src
     - name: test app
       run: src/Release-x86_64/app
     - name: test app_dll
@@ -33,9 +35,11 @@ jobs:
       CC: clang++
       CXX: clang++
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@master
     - name: build
-      run: make -C src
+      run: |
+        echo "CC=$CC CXX=$CXX"
+        make -C src
     - name: test app
       run: src/Release-x86_64/app
     - name: test app_dll
@@ -48,9 +52,11 @@ jobs:
       CC: clang++
       CXX: clang++
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@master
     - name: build
-      run: make -C src CXX=clang CC=clang
+      run: |
+        echo "CC=$CC CXX=$CXX"
+        make -C src
     - name: test app
       run: src/Release-x86_64/app
     - name: test app_dll
@@ -60,7 +66,7 @@ jobs:
     name: Windows with VC++
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@master
     - name: build 64-bit
       run: src/Build.ps1 x64
     - name: build 32-bit
