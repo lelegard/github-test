@@ -18,7 +18,7 @@ jobs:
     - name: install dependencies
       run: |
         sudo apt update
-        sudo apt install dos2unix curl tar libpcsclite-dev libcurl4 libcurl4-openssl-dev
+        sudo apt install dos2unix curl tar libpcsclite-dev libcurl4 libcurl4-openssl-dev dpkg-dev
     - name: build
       run: make -C src
     - name: test app
@@ -37,7 +37,7 @@ jobs:
     - name: install dependencies
       run: |
         sudo apt update
-        sudo apt install dos2unix curl tar libpcsclite-dev libcurl4 libcurl4-openssl-dev
+        sudo apt install dos2unix curl tar libpcsclite-dev libcurl4 libcurl4-openssl-dev dpkg-dev
     - name: build
       run: make -C src
     - name: test app
@@ -87,3 +87,9 @@ jobs:
       run: src/Release-x64/app_dll.exe
     - name: test app_dll 32-bit
       run: src/Release-Win32/app_dll.exe
+    - name: test tsduck exec
+      run: |
+        pwd
+        ls tsduck
+        tsduck/tsversion.exe --version=all
+
