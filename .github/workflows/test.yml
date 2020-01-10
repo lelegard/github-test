@@ -73,8 +73,17 @@ jobs:
   windows-msvc:
     name: Windows with VC++
     runs-on: windows-latest
+    shell: powershell
     steps:
     - uses: actions/checkout@master
+    - name: install dependencies
+      run: |
+        $ProgressPreference = 'SilentlyContinue'
+        Invoke-WebRequest -Uri "http://prdownloads.sourceforge.net/nsis/nsis-3.05-setup.exe?download" -OutFile nsis-setup.exe
+        . .\nsis-3.05-setup.exe /S
+        ls "C:\Program Files (x86)\NSIS"
+        & dektec\Download-Install-Dtapi.ps1
+        ls "C:\Program Files (x86)\DekTec"
     - name: build 64-bit
       run: src/Build.ps1 x64
     - name: build 32-bit
@@ -92,4 +101,3 @@ jobs:
         pwd
         ls tsduck
         tsduck/tsversion.exe --version=all
-
