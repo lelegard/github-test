@@ -1,15 +1,69 @@
-name: CI
+name: Test CI
 
-on: [push]
+# Trigger the workflow on push or pull request
+# on: [push, pull_request]
+
+# Trigger the workflow on push or pull request,
+# but only for the master branch
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
 
 jobs:
-  build:
-
+  linux-gcc:
+    name: Linux with gcc
     runs-on: ubuntu-latest
-    
     steps:
     - uses: actions/checkout@v1
-    - name: make
+    - name: build
       run: make -C src
-    - name: make test
-      run: make -C src test
+    - name: test app
+      run: src/Release-x86_64/app
+    - name: test app_dll
+      run: src/Release-x86_64/app_dll
+
+  linux-clang:
+    name: Linux with clang
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: build
+      run: make -C src
+    - name: test app
+      run: src/Release-x86_64/app
+    - name: test app_dll
+      run: src/Release-x86_64/app_dll
+
+  macos-clang:
+    name: macOS with clang
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: build
+      run: make -C src CXX=clang CC=clang
+    - name: test app
+      run: src/Release-x86_64/app
+    - name: test app_dll
+      run: src/Release-x86_64/app_dll
+
+  windows-msvc:
+    name: Windows with VC++
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: build 64-bit
+      run: src/Build.ps1 x64
+    - name: build 32-bit
+      run: src/Build.ps1 Win32
+    - name: test app 64-bit
+      run: src/Release-x64/app.exe
+    - name: test app 32-bit
+      run: src/Release-Win32/app.exe
+    - name: test app_dll 64-bit
+      run: src/Release-x64/app_dll.exe
+    - name: test app_dll 32-bit
+      run: src/Release-Win32/app_dll.exe
