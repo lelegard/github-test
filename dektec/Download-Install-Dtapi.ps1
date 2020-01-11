@@ -124,7 +124,6 @@ if (-not (Test-Path $DtapiZipFile)) {
 }
 
 # Extract archive.
-Write-Output $DtapiDir
 if (Test-Path $DtapiDir) {
     Write-Output "Cleaning up previous $DtapiDir"
     Remove-Item $DtapiDir -Recurse -Force

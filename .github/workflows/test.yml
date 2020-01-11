@@ -100,3 +100,8 @@ jobs:
       run: src/Release-Win32/app_dll.exe
     - name: test tsduck exec
       run: tsduck/tsversion.exe --version=all
+    - name: Upload app
+      uses: actions/upload-artifact@master
+      with:
+        name: app executable
+        path: src/Release-x64/app.exe
