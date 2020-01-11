@@ -99,8 +99,9 @@ if ($status -ne 1 -and $status -ne 2) {
 }
 
 write-output "===== RESPONSE"
-$reponse
+$reponse | Format-List
 write-output "===== RESPONSE PARSED HTML"
+$response.RawContent
 $response.ParsedHtml
  
 # Parse HTML page to locate the WinSDK file.

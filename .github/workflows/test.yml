@@ -10,72 +10,72 @@ on:
       - master
 
 jobs:
-  linux-gcc:
-    name: Linux with gcc
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@master
-    - name: install dependencies
-      run: |
-        sudo apt update
-        sudo apt install dos2unix curl tar libpcsclite-dev libcurl4 libcurl4-openssl-dev dpkg-dev
-    - name: build
-      run: make -C src
-    - name: test app
-      run: src/Release-x86_64/app
-    - name: test app_dll
-      run: src/Release-x86_64/app_dll
-
-  linux-clang:
-    name: Linux with clang
-    runs-on: ubuntu-latest
-    env:
-      CC: clang++
-      CXX: clang++
-    steps:
-    - uses: actions/checkout@master
-    - name: install dependencies
-      run: |
-        sudo apt update
-        sudo apt install dos2unix curl tar libpcsclite-dev libcurl4 libcurl4-openssl-dev dpkg-dev
-    - name: build
-      run: make -C src
-    - name: test app
-      run: src/Release-x86_64/app
-    - name: test app_dll
-      run: src/Release-x86_64/app_dll
-
-  macos-clang:
-    name: macOS with clang
-    runs-on: macos-latest
-    env:
-      CC: clang++
-      CXX: clang++
-    steps:
-    - uses: actions/checkout@master
-    - name: install dependencies
-      run: |
-        brew update
-        brew install gnu-sed grep dos2unix pcsc-lite
-    - name: check dependencies
-      run: |
-        pwd
-        gsed --version
-        ggrep --version
-        dos2unix --version
-    - name: build
-      run: make -C src
-    - name: test app
-      run: src/Release-x86_64/app
-    - name: test app_dll
-      run: src/Release-x86_64/app_dll
+#@@@  linux-gcc:
+#@@@    name: Linux with gcc
+#@@@    runs-on: ubuntu-latest
+#@@@    steps:
+#@@@    - uses: actions/checkout@master
+#@@@    - name: install dependencies
+#@@@      run: |
+#@@@        sudo apt update
+#@@@        sudo apt install dos2unix curl tar libpcsclite-dev libcurl4 libcurl4-openssl-dev dpkg-dev
+#@@@    - name: build
+#@@@      run: make -C src
+#@@@    - name: test app
+#@@@      run: src/Release-x86_64/app
+#@@@    - name: test app_dll
+#@@@      run: src/Release-x86_64/app_dll
+#@@@
+#@@@  linux-clang:
+#@@@    name: Linux with clang
+#@@@    runs-on: ubuntu-latest
+#@@@    env:
+#@@@      CC: clang++
+#@@@      CXX: clang++
+#@@@    steps:
+#@@@    - uses: actions/checkout@master
+#@@@    - name: install dependencies
+#@@@      run: |
+#@@@        sudo apt update
+#@@@        sudo apt install dos2unix curl tar libpcsclite-dev libcurl4 libcurl4-openssl-dev dpkg-dev
+#@@@    - name: build
+#@@@      run: make -C src
+#@@@    - name: test app
+#@@@      run: src/Release-x86_64/app
+#@@@    - name: test app_dll
+#@@@      run: src/Release-x86_64/app_dll
+#@@@
+#@@@  macos-clang:
+#@@@    name: macOS with clang
+#@@@    runs-on: macos-latest
+#@@@    env:
+#@@@      CC: clang++
+#@@@      CXX: clang++
+#@@@    steps:
+#@@@    - uses: actions/checkout@master
+#@@@    - name: install dependencies
+#@@@      run: |
+#@@@        brew update
+#@@@        brew install gnu-sed grep dos2unix pcsc-lite
+#@@@    - name: check dependencies
+#@@@      run: |
+#@@@        pwd
+#@@@        gsed --version
+#@@@        ggrep --version
+#@@@        dos2unix --version
+#@@@    - name: build
+#@@@      run: make -C src
+#@@@    - name: test app
+#@@@      run: src/Release-x86_64/app
+#@@@    - name: test app_dll
+#@@@      run: src/Release-x86_64/app_dll
 
   windows-msvc:
     name: Windows with VC++
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@master
-    - name: install dependencies
+    - name: install nsis
       run: |
         Get-Location
         $NsisUrl = 'http://prdownloads.sourceforge.net/nsis/nsis-3.05-setup.exe?download'
@@ -84,6 +84,8 @@ jobs:
         Get-ChildItem | Format-Table
         . .\nsis-setup.exe /S
         Get-ChildItem "C:\Program Files (x86)\NSIS" | Format-Table
+    - name: install dektec sdk
+      run: |
         Set-PSDebug -Trace 2
         dektec/Download-Install-Dtapi.ps1 -NoPause
         Get-ChildItem "C:\Program Files (x86)\DekTec" | Format-Table
