@@ -102,14 +102,15 @@ jobs:
 #@@@      run: tsduck/tsversion.exe --version=all
     - name: test setting env
       run: |
-          $env:FOO = "Foo bar"
-          Write-Output "FOO= $($env:FOO)"
+          $env:FOO = "foo"
+          $env:BAR = "bar"
+          Write-Output "FOO=$($env:FOO) BAR=$($env:BAR)"
     - name: test env persistence across steps
-      run:
-          Write-Output "FOO= $($env:FOO)"
-          echo $env:FOO >test.txt
+      run: |
+          Write-Output "FOO=$($env:FOO) BAR=$($env:BAR)"
+          echo $env:FOO >bar.txt
     - name: Upload app
       uses: actions/upload-artifact@master
       with:
-        name: app ${{ env.FOO }}
-        path: test.txt
+        name: app${{ env.FOO }}
+        path: ${{ env.BAR }}.txt
