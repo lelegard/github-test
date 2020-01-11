@@ -86,29 +86,30 @@ jobs:
 #@@@      run: |
 #@@@        dektec/Download-Install-Dtapi.ps1 -NoPause
 #@@@        Get-ChildItem "C:\Program Files (x86)\DekTec" | Format-Table
-    - name: build 64-bit
-      run: src/Build.ps1 x64
+#@@@    - name: build 64-bit
+#@@@      run: src/Build.ps1 x64
 #@@@    - name: build 32-bit
 #@@@      run: src/Build.ps1 Win32
-    - name: test app 64-bit
-      run: src/Release-x64/app.exe
+#@@@    - name: test app 64-bit
+#@@@      run: src/Release-x64/app.exe
 #@@@    - name: test app 32-bit
 #@@@      run: src/Release-Win32/app.exe
-    - name: test app_dll 64-bit
-      run: src/Release-x64/app_dll.exe
+#@@@    - name: test app_dll 64-bit
+#@@@      run: src/Release-x64/app_dll.exe
 #@@@    - name: test app_dll 32-bit
 #@@@      run: src/Release-Win32/app_dll.exe
 #@@@    - name: test tsduck exec
 #@@@      run: tsduck/tsversion.exe --version=all
     - name: test setting env
-      run:
+      run: |
           $env:FOO = "Foo bar"
           Write-Output "FOO= $($env:FOO)"
     - name: test env persistence across steps
       run:
           Write-Output "FOO= $($env:FOO)"
+          echo $env:FOO >test.txt
     - name: Upload app
       uses: actions/upload-artifact@master
       with:
         name: app ${{ env.FOO }}
-        path: src/Release-x64/app.exe
+        path: test.txt
