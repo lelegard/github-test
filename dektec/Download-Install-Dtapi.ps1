@@ -99,6 +99,9 @@ if ($status -ne 1 -and $status -ne 2) {
 }
 
 write-output "===== RESPONSE @@@@@@@@@@@@@@@@@@@@@@@"
+Write-Output "response is null: $($response -eq $null)"
+Write-Output "response.RawContent is null: $($response.RawContent -eq $null)"
+Write-Output "response.ParsedHtml is null: $($response.ParsedHtml -eq $null)"
 $reponse | Format-List
 write-output "===== RESPONSE PARSED HTML"
 $response.RawContent
