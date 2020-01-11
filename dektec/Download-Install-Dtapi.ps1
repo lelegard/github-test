@@ -98,10 +98,11 @@ if ($status -ne 1 -and $status -ne 2) {
     }
 }
 
-write-output "===== RESPONSE"
+write-output "===== RESPONSE @@@@@@@@@@@@@@@@@@@@@@@"
 $reponse | Format-List
 write-output "===== RESPONSE PARSED HTML"
 $response.RawContent
+$response.ParsedHtml.getElementsByTagName("a")|Format-Table
 $response.ParsedHtml
  
 # Parse HTML page to locate the WinSDK file.
@@ -136,6 +137,7 @@ if (Test-Path $DtapiDir) {
 Write-Output "Expanding DTAPI to $DtapiDir ..."
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 [System.IO.Compression.ZipFile]::ExtractToDirectory($DtapiZipFile, $DtapiDir)
+exit 0 #@@@@@@@
 
 # Install the DTAPI.
 if (-not $NoInstall) {
