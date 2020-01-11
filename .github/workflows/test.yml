@@ -75,32 +75,32 @@ jobs:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@master
-    - name: install nsis
-      run: |
-        Get-Location
-        $NsisUrl = 'http://prdownloads.sourceforge.net/nsis/nsis-3.05-setup.exe?download'
-        $ProgressPreference = 'SilentlyContinue'
-        Invoke-WebRequest -Uri $NsisUrl -UserAgent Download -OutFile nsis-setup.exe
-        Get-ChildItem | Format-Table
-        . .\nsis-setup.exe /S
-        Get-ChildItem "C:\Program Files (x86)\NSIS" | Format-Table
+#@@@    - name: install nsis
+#@@@      run: |
+#@@@        Get-Location
+#@@@        $NsisUrl = 'http://prdownloads.sourceforge.net/nsis/nsis-3.05-setup.exe?download'
+#@@@        $ProgressPreference = 'SilentlyContinue'
+#@@@        Invoke-WebRequest -Uri $NsisUrl -UserAgent Download -OutFile nsis-setup.exe
+#@@@        Get-ChildItem | Format-Table
+#@@@        . .\nsis-setup.exe /S
+#@@@        Get-ChildItem "C:\Program Files (x86)\NSIS" | Format-Table
     - name: install dektec sdk
       run: |
         Set-PSDebug -Trace 2
         dektec/Download-Install-Dtapi.ps1 -NoPause
         Get-ChildItem "C:\Program Files (x86)\DekTec" | Format-Table
-    - name: build 64-bit
-      run: src/Build.ps1 x64
-    - name: build 32-bit
-      run: src/Build.ps1 Win32
-    - name: test app 64-bit
-      run: src/Release-x64/app.exe
-    - name: test app 32-bit
-      run: src/Release-Win32/app.exe
-    - name: test app_dll 64-bit
-      run: src/Release-x64/app_dll.exe
-    - name: test app_dll 32-bit
-      run: src/Release-Win32/app_dll.exe
+#@@@    - name: build 64-bit
+#@@@      run: src/Build.ps1 x64
+#@@@    - name: build 32-bit
+#@@@      run: src/Build.ps1 Win32
+#@@@    - name: test app 64-bit
+#@@@      run: src/Release-x64/app.exe
+#@@@    - name: test app 32-bit
+#@@@      run: src/Release-Win32/app.exe
+#@@@    - name: test app_dll 64-bit
+#@@@      run: src/Release-x64/app_dll.exe
+#@@@    - name: test app_dll 32-bit
+#@@@      run: src/Release-Win32/app_dll.exe
     - name: test tsduck exec
       run: |
         pwd
