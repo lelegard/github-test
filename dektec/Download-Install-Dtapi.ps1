@@ -170,7 +170,8 @@ if (-not $NoInstall) {
     }
 
     # Install new version in silent mode.
-    . $DtapiSetup /S /v/qn
+    Write-Output "Executing $DtapiSetup"
+    Start-Process -FilePath $DtapiSetup -ArgumentList @("/S", "/v/qn") -Wait
 }
 
 Exit-Script
