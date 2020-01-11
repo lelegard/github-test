@@ -80,7 +80,7 @@ jobs:
 #@@@        Get-Location
 #@@@        $NsisUrl = 'http://prdownloads.sourceforge.net/nsis/nsis-3.05-setup.exe?download'
 #@@@        $ProgressPreference = 'SilentlyContinue'
-#@@@        Invoke-WebRequest -Uri $NsisUrl -UserAgent Download -OutFile nsis-setup.exe
+#@@@        Invoke-WebRequest -UseBasicParsing -Uri $NsisUrl -UserAgent Download -OutFile nsis-setup.exe
 #@@@        Get-ChildItem | Format-Table
 #@@@        . .\nsis-setup.exe /S
 #@@@        Get-ChildItem "C:\Program Files (x86)\NSIS" | Format-Table

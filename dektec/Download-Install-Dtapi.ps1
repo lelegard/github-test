@@ -80,10 +80,13 @@ function Exit-Script([string]$Message = "")
 $ProgressPreference = 'SilentlyContinue'
 
 # Get the HTML page for Dektec SDK downloads.
+# Normally, Invoke-WebRequest relies on Internet Explorer for HTML parsing.
+# Use -UseBasicParsing here because when we try to install Dektec SDK in
+# GitHub Actions, we execute in the Azure cloud and Azure has no`# Internet Explorer installed. 
 $status = 0
 $message = ""
 try {
-    $response = Invoke-WebRequest $DektecUrl
+    $response = Invoke-WebRequest -UseBasicParsing -UserAgent Download -Uri $DektecUrl
     $status = [int] [Math]::Floor($response.StatusCode / 100)
 }
 catch {
@@ -98,19 +101,8 @@ if ($status -ne 1 -and $status -ne 2) {
     }
 }
 
-write-output "===== RESPONSE @@@@@@@@@@@@@@@@@@@@@@@"
-Write-Output "response is null: $($response -eq $null)"
-Write-Output "response.RawContent is null: $($response.RawContent -eq $null)"
-Write-Output "response.ParsedHtml is null: $($response.ParsedHtml -eq $null)"
-$reponse | Format-List
-write-output "===== RESPONSE PARSED HTML"
-$response.RawContent
-$response.ParsedHtml.getElementsByTagName("a")|Format-Table
-$response.ParsedHtml
- 
 # Parse HTML page to locate the WinSDK file.
-$sdk = $response.ParsedHtml.getElementsByTagName("a") | Where-Object { $_.href -like "*/WinSDK*.zip" } | Select-Object -First 1
-$sdkRef = $sdk.href -replace '^about:',''
+$sdkRef = $response.Links.href | Where-Object { $_ -like "*/WinSDK*.zip" } | Select-Object -First 1
 
 # Build the absolute URL from base URL (the download page) and href link.
 $DtapiUrl = (New-Object -TypeName 'System.Uri' -ArgumentList ([System.Uri]$DektecUrl),$sdkref)
@@ -125,7 +117,7 @@ if (-not $ForceDownload -and (Test-Path $DtapiZipFile)) {
 }
 else {
     Write-Output "Downloading $DtapiUrl ..."
-    Invoke-WebRequest -Uri $DtapiUrl -OutFile $DtapiZipFile
+    Invoke-WebRequest -UseBasicParsing -UserAgent Download -Uri $DtapiUrl -OutFile $DtapiZipFile
 }
 if (-not (Test-Path $DtapiZipFile)) {
     Exit-Script "$DtapiZipName download failed"
@@ -140,7 +132,6 @@ if (Test-Path $DtapiDir) {
 Write-Output "Expanding DTAPI to $DtapiDir ..."
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 [System.IO.Compression.ZipFile]::ExtractToDirectory($DtapiZipFile, $DtapiDir)
-exit 0 #@@@@@@@
 
 # Install the DTAPI.
 if (-not $NoInstall) {
