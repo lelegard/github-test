@@ -110,9 +110,6 @@ jobs:
           Write-Output "FOO=$($env:FOO) BAR=$($env:BAR)"
           echo $env:FOO >bar.txt
     - name: Upload app
-      run: |
-          $env:FOO = "foo"
-          $env:BAR = "bar"
       uses: actions/upload-artifact@master
       with:
         name: app${{ env.FOO }}
