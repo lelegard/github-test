@@ -5,9 +5,9 @@ on:
   push:
     branches:
       - master
-  pull_request:
-    branches:
-      - master
+#@@@  pull_request:
+#@@@    branches:
+#@@@      - master
 
 jobs:
 #@@@  linux-gcc:
@@ -109,8 +109,13 @@ jobs:
 #@@@      run: |
 #@@@          Write-Output "FOO=$($env:FOO) BAR=$($env:BAR)"
 #@@@          echo $env:FOO >bar.txt
-#@@@    - name: Upload app
-#@@@      uses: actions/upload-artifact@master
-#@@@      with:
-#@@@        name: app${{ env.FOO }}
-#@@@        path: ${{ env.BAR }}.txt
+    - name: Build app
+      run: |
+        $version = "1.3.45"
+        Write-Output "Application version $version" | Out-File app-$version.txt
+        Write-Output "::set-env name=VERSION::$version"
+    - name: Upload app
+      uses: actions/upload-artifact@master
+      with:
+        name: installer-${{ env.VERSION }}
+        path: app-${{ env.VERSION }}.txt
