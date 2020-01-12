@@ -1,0 +1,47 @@
+name: Nightly build
+
+# Trigger the workflow everyday at 01:10
+on:
+#@@@  schedule:
+#@@@    - cron:  '10 1 * * *'
+  push:
+    branches:
+      - master
+
+jobs:
+  windows:
+    name: Windows build
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@master
+#@@@    - name: install nsis
+#@@@      run: |
+#@@@        $NsisUrl = 'http://prdownloads.sourceforge.net/nsis/nsis-3.05-setup.exe?download'
+#@@@        $ProgressPreference = 'SilentlyContinue'
+#@@@        Invoke-WebRequest -UseBasicParsing -Uri $NsisUrl -UserAgent Download -OutFile nsis-setup.exe
+#@@@        Start-Process -FilePath nsis-setup.exe -ArgumentList @("/S") -Wait
+#@@@        Get-ChildItem "C:\Program Files (x86)\NSIS" | Format-Table
+#@@@    - name: install dektec sdk
+#@@@      run: |
+#@@@        dektec/Download-Install-Dtapi.ps1 -NoPause
+#@@@        Get-ChildItem "C:\Program Files (x86)\DekTec" | Format-Table
+    - name: Build installers
+      run: |
+          Get-Date
+          Write-Output "3.20-1879" >version.txt
+          mkdir installers
+          Write-Output "foo" >installers/foo.txt
+          Write-Output "bar" >installers/bar.log
+          $ProgressPreference = 'SilentlyContinue'
+          Get-ChildItem -Recurse -Path installers -Include @("*.txt", "*.log") | `
+            Compress-Archive -DestinationPath installers.zip -Force -CompressionLevel Fastest
+    - name: Upload installers
+      uses: actions/upload-artifact@master
+      with:
+        name: installers
+        path: installers.zip
+    - name: Upload version
+      uses: actions/upload-artifact@master
+      with:
+        name: version
+        path: version.txt

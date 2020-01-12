@@ -100,17 +100,17 @@ jobs:
 #@@@      run: src/Release-Win32/app_dll.exe
 #@@@    - name: test tsduck exec
 #@@@      run: tsduck/tsversion.exe --version=all
-    - name: test setting env
-      run: |
-          $env:FOO = "foo"
-          $env:BAR = "bar"
-          Write-Output "FOO=$($env:FOO) BAR=$($env:BAR)"
-    - name: test env persistence across steps
-      run: |
-          Write-Output "FOO=$($env:FOO) BAR=$($env:BAR)"
-          echo $env:FOO >bar.txt
-    - name: Upload app
-      uses: actions/upload-artifact@master
-      with:
-        name: app${{ env.FOO }}
-        path: ${{ env.BAR }}.txt
+#@@@    - name: test setting env
+#@@@      run: |
+#@@@          $env:FOO = "foo"
+#@@@          $env:BAR = "bar"
+#@@@          Write-Output "FOO=$($env:FOO) BAR=$($env:BAR)"
+#@@@    - name: test env persistence across steps
+#@@@      run: |
+#@@@          Write-Output "FOO=$($env:FOO) BAR=$($env:BAR)"
+#@@@          echo $env:FOO >bar.txt
+#@@@    - name: Upload app
+#@@@      uses: actions/upload-artifact@master
+#@@@      with:
+#@@@        name: app${{ env.FOO }}
+#@@@        path: ${{ env.BAR }}.txt
