@@ -27,8 +27,6 @@ jobs:
         Write-Output 'github.ref="${{ github.ref }}"'
         Write-Output 'github.workspace="${{ github.workspace }}"'
         Write-Output 'github.action="${{ github.action }}"'
-        Write-Output 'os="${{ os }}"'
-        Write-Output 'temp="${{ temp }}"'
         Write-Output 'job="${{ toJson(job) }}"'
         Write-Output 'steps="${{ toJson(steps) }}"'
         Write-Output 'runner="${{ toJson(runner) }}"'
