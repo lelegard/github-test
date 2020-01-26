@@ -1,4 +1,4 @@
-name: CI
+name: CI test
 
 # Trigger the workflow on push or pull request, for master branch only.
 on:
@@ -10,6 +10,29 @@ on:
 #@@@      - master
 
 jobs:
+  windows-test:
+    name: Windows test
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Test step
+      run: |
+        Write-Output 'github.event="${{ github.event }}"'
+        Write-Output 'github.event_path="${{ github.event_path }}"'
+        Write-Output 'github.workflow="${{ github.workflow }}"'
+        Write-Output 'github.actor="${{ github.actor }}"'
+        Write-Output 'github.repository="${{ github.repository }}"'
+        Write-Output 'github.event_name="${{ github.event_name }}"'
+        Write-Output 'github.sha="${{ github.sha }}"'
+        Write-Output 'github.ref="${{ github.ref }}"'
+        Write-Output 'github.workspace="${{ github.workspace }}"'
+        Write-Output 'github.action="${{ github.action }}"'
+        Write-Output 'os="${{ os }}"'
+        Write-Output 'temp="${{ temp }}"'
+        Write-Output 'job="${{ toJson(job) }}"'
+        Write-Output 'steps="${{ toJson(steps) }}"'
+        Write-Output 'runner="${{ toJson(runner) }}"'
+
 #@@@  linux-gcc:
 #@@@    name: Linux with gcc
 #@@@    runs-on: ubuntu-latest
@@ -70,11 +93,11 @@ jobs:
 #@@@    - name: test app_dll
 #@@@      run: src/Release-x86_64/app_dll
 #@@@
-  windows-msvc:
-    name: Windows with VC++
-    runs-on: windows-latest
-    steps:
-    - uses: actions/checkout@master
+#@@@  windows-msvc:
+#@@@    name: Windows with VC++
+#@@@    runs-on: windows-latest
+#@@@    steps:
+#@@@    - uses: actions/checkout@master
 #@@@    - name: install nsis
 #@@@      run: |
 #@@@        $NsisUrl = 'http://prdownloads.sourceforge.net/nsis/nsis-3.05-setup.exe?download'
@@ -109,13 +132,13 @@ jobs:
 #@@@      run: |
 #@@@          Write-Output "FOO=$($env:FOO) BAR=$($env:BAR)"
 #@@@          echo $env:FOO >bar.txt
-    - name: Build app
-      run: |
-        $version = "1.3.45"
-        Write-Output "Application version $version" | Out-File app-$version.txt
-        Write-Output "::set-env name=VERSION::$version"
-    - name: Upload app
-      uses: actions/upload-artifact@master
-      with:
-        name: installer-${{ env.VERSION }}
-        path: app-${{ env.VERSION }}.txt
+#@@@    - name: Build app
+#@@@      run: |
+#@@@        $version = "1.3.45"
+#@@@        Write-Output "Application version $version" | Out-File app-$version.txt
+#@@@        Write-Output "::set-env name=VERSION::$version"
+#@@@    - name: Upload app
+#@@@      uses: actions/upload-artifact@master
+#@@@      with:
+#@@@        name: installer-${{ env.VERSION }}
+#@@@        path: app-${{ env.VERSION }}.txt
