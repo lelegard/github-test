@@ -50,8 +50,9 @@ jobs:
       run: |
         $workflow = "${{ github.workflow }}" -replace ' ','+'
         $url = "https://github.com/${{ github.repository }}/actions?query=workflow%3A%22${workflow}%22"
+        Write-Output "URL: $url"
         $ProgressPreference = 'SilentlyContinue'
-        $response = Invoke-WebRequest -UseBasicParsing -UserAgent Download -Uri $url -Headers @{'authorization' = 'Bearer ${{ secrets.GITHUB_TOKEN }}'}
+        $response = Invoke-WebRequest -Uri $url -UseBasicParsing -UserAgent Download -Headers @{'authorization' = 'Bearer ${{ secrets.GITHUB_TOKEN }}'}
         Write-Output "======================================"
         $response.Links
         Write-Output "======================================"
