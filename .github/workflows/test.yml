@@ -15,7 +15,7 @@ jobs:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@master
-    - name: Test step
+    - name: Display config
       run: |
         Write-Output 'github.event="${{ github.event }}"'
         Write-Output 'github.event_path="${{ github.event_path }}"'
@@ -30,6 +30,34 @@ jobs:
         Write-Output 'job="${{ toJson(job) }}"'
         Write-Output 'steps="${{ toJson(steps) }}"'
         Write-Output 'runner="${{ toJson(runner) }}"'
+    - name: Build app
+      run: |
+        $version = "1.3.45"
+        Write-Output "Application version $version" | Out-File app32-$version.txt
+        Copy-Item app32-$version.txt app64-$version.txt
+        Write-Output "::set-env name=VERSION::$version"
+    - name: Upload app 32
+      uses: actions/upload-artifact@master
+      with:
+        name: installer-32
+        path: app32-${{ env.VERSION }}.txt
+    - name: Upload app 64
+      uses: actions/upload-artifact@master
+      with:
+        name: installer-64
+        path: app64-${{ env.VERSION }}.txt
+    - name: Get artifact URL
+      run: |
+        $workflow = "${{ github.workflow }}" -replace ' ','+'
+        $url = "https://github.com/${{ github.repository }}/actions?query=workflow%3A%22${workflow}%22"
+        $ProgressPreference = 'SilentlyContinue'
+        $response = Invoke-WebRequest -UseBasicParsing -UserAgent Download -Uri $url
+        Write-Output "======================================"
+        $response.Links
+        Write-Output "======================================"
+        $response
+        Write-Output "======================================"
+
 
 #@@@  linux-gcc:
 #@@@    name: Linux with gcc
