@@ -1,7 +1,5 @@
 name: CI test
-
 on: [push]
-
 jobs:
   linux-test:
     name: Linux test
@@ -13,8 +11,6 @@ jobs:
         workflow=$(echo "${{ github.workflow }}" | sed -e 's/ /+/g')
         url="https://github.com/${{ github.repository }}/actions?query=workflow%3A%22${workflow}%22"
         echo "URL: $url"
-        tsize=$(wc -c <<<"${{ secrets.GITHUB_TOKEN }}")
-        echo "Token size: $tsize"
         curl "$url" --silent --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}'
         
 #@@@  windows-test:
