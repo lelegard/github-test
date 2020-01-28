@@ -9,8 +9,11 @@ jobs:
     - name: Get actions page
       run: |
         workflow=$(echo "${{ github.workflow }}" | sed -e 's/ /+/g')
+        url="https://github.com/${{ github.repository }}/actions
+        echo "==== URL: $url"
+        curl "$url" --silent --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}'
         url="https://github.com/${{ github.repository }}/actions?query=workflow%3A%22${workflow}%22"
-        echo "URL: $url"
+        echo "==== URL: $url"
         curl "$url" --silent --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}'
         
 #@@@  windows-test:
