@@ -39,7 +39,7 @@ jobs:
             Write-Output "::set-env name=CONTINUE::true"
         }
     - name: Build app
-      if: ${{ env.CONTINUE }}
+      #@@ if: ${{ env.CONTINUE }}
       run: |
         $version = "${{ env.VERSION }}"
         $version | Out-File version.txt
