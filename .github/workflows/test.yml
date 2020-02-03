@@ -35,6 +35,9 @@ jobs:
             Write-Output "Same version, don't rebuild"
             Write-Output "::set-env name=SAME_VERSION::true"
         }
+        else {
+            Write-Output "::set-env name=SAME_VERSION::"
+        }
     - name: Build app
       if: ${{ env.SAME_VERSION }} != ''
       run: |
