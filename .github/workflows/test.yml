@@ -21,10 +21,10 @@ jobs:
         Write-Output 'job="${{ toJson(job) }}"'
         Write-Output 'steps="${{ toJson(steps) }}"'
         Write-Output 'runner="${{ toJson(runner) }}"'
-    - name: Get previous version
-      uses: actions/download-artifact@master
-      with:
-        name: version
+#@@@    - name: Get previous version
+#@@@      uses: actions/download-artifact@master
+#@@@      with:
+#@@@        name: version
     - name: Check version
       run: |
         $version = "1.3.45"
@@ -39,19 +39,19 @@ jobs:
             Write-Output "::set-env name=CONTINUE::true"
         }
     - name: Build app
-      #@@ if: ${{ env.CONTINUE }}
+      if: env.CONTINUE
       run: |
         $version = "${{ env.VERSION }}"
         $version | Out-File version.txt
         "Application 64 version $version" | Out-File app64-$version.txt
     - name: Upload version
-      #@@ if: ${{ env.CONTINUE }}
+      if: env.CONTINUE
       uses: actions/upload-artifact@master
       with:
         name: version
         path: version.txt
     - name: Upload app 64
-      #@@ if: ${{ env.CONTINUE }}
+      if: env.CONTINUE
       uses: actions/upload-artifact@master
       with:
         name: installer-64
