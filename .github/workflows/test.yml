@@ -21,37 +21,37 @@ jobs:
         Write-Output 'job="${{ toJson(job) }}"'
         Write-Output 'steps="${{ toJson(steps) }}"'
         Write-Output 'runner="${{ toJson(runner) }}"'
-#@@@    - name: Get previous version
-#@@@      uses: actions/download-artifact@master
-#@@@      with:
-#@@@        name: version
-    - name: Check version
+    - name: Create dummy cache
+      run: mkdir dummy-cache
+    - name: Check cached commit
+      # Note: this creates one cache key at each rebuild but GitHub
+      # removes cache entries that have not been accessed in over 7 days.
+      id: cache-commit
+      uses: actions/cache@master
+      with:
+        key: commit-${{ github.sha }}
+        path: dummy-cache
+    - name: Check same version
+      if: steps.cache-commit.outputs.cache-hit
+      run: Write-Output "Same commit"
+    - name: Check different version
+      if: ! steps.cache-commit.outputs.cache-hit
+      run: Write-Output "Not the same commit"
+    - name: Build app
+      if: ! steps.cache-commit.outputs.cache-hit
       run: |
         $version = "1.3.45"
-        $previous_version = Get-Content -ErrorAction Ignore version.txt
-        Write-Output "Version: previous: $previous_version, current: $version"
         Write-Output "::set-env name=VERSION::$version"
-        if ($previous_version -eq $version) {
-            Write-Output "Same version, don't rebuild"
-            Write-Output "::set-env name=CONTINUE::false"
-        }
-        else {
-            Write-Output "::set-env name=CONTINUE::true"
-        }
-    - name: Build app
-      if: env.CONTINUE
-      run: |
-        $version = "${{ env.VERSION }}"
         $version | Out-File version.txt
         "Application 64 version $version" | Out-File app64-$version.txt
     - name: Upload version
-      if: env.CONTINUE
+      if: ! steps.cache-commit.outputs.cache-hit
       uses: actions/upload-artifact@master
       with:
         name: version
         path: version.txt
     - name: Upload app 64
-      if: env.CONTINUE
+      if: ! steps.cache-commit.outputs.cache-hit
       uses: actions/upload-artifact@master
       with:
         name: installer-64
