@@ -22,7 +22,7 @@ jobs:
         Write-Output 'steps="${{ toJson(steps) }}"'
         Write-Output 'runner="${{ toJson(runner) }}"'
     - name: Get previous version
-      uses: actions/download-artifact@v1
+      uses: actions/download-artifact@master
       with:
         name: version
     - name: Check version
@@ -33,32 +33,32 @@ jobs:
         Write-Output "::set-env name=VERSION::$version"
         if ($previous_version -eq $version) {
             Write-Output "Same version, don't rebuild"
-            Write-Output "::set-env name=SAME_VERSION::true"
+            Write-Output "::set-env name=CONTINUE::false"
         }
         else {
-            Write-Output "::set-env name=SAME_VERSION::"
+            Write-Output "::set-env name=CONTINUE::true"
         }
     - name: Build app
-      if: ${{ env.SAME_VERSION }} != ''
+      if: ${{ env.CONTINUE }}
       run: |
         $version = "${{ env.VERSION }}"
         $version | Out-File version.txt
         "Application 32 version $version" | Out-File app32-$version.txt
         "Application 64 version $version" | Out-File app64-$version.txt
     - name: Upload version
-      if: ${{ env.SAME_VERSION }} != ''
+      if: ${{ env.CONTINUE }}
       uses: actions/upload-artifact@master
       with:
         name: version
         path: version.txt
     - name: Upload app 32
-      if: ${{ env.SAME_VERSION }} != ''
+      if: ${{ env.CONTINUE }}
       uses: actions/upload-artifact@master
       with:
         name: installer-32
         path: app32-${{ env.VERSION }}.txt
     - name: Upload app 64
-      if: ${{ env.SAME_VERSION }} != ''
+      if: ${{ env.CONTINUE }}
       uses: actions/upload-artifact@master
       with:
         name: installer-64
