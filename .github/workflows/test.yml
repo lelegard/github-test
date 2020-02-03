@@ -43,22 +43,15 @@ jobs:
       run: |
         $version = "${{ env.VERSION }}"
         $version | Out-File version.txt
-        "Application 32 version $version" | Out-File app32-$version.txt
         "Application 64 version $version" | Out-File app64-$version.txt
     - name: Upload version
-      if: ${{ env.CONTINUE }}
+      #@@ if: ${{ env.CONTINUE }}
       uses: actions/upload-artifact@master
       with:
         name: version
         path: version.txt
-    - name: Upload app 32
-      if: ${{ env.CONTINUE }}
-      uses: actions/upload-artifact@master
-      with:
-        name: installer-32
-        path: app32-${{ env.VERSION }}.txt
     - name: Upload app 64
-      if: ${{ env.CONTINUE }}
+      #@@ if: ${{ env.CONTINUE }}
       uses: actions/upload-artifact@master
       with:
         name: installer-64
