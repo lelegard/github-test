@@ -1,177 +1,61 @@
 name: CI test
 on: [push]
 jobs:
-  linux-test:
-    name: Linux test
-    runs-on: ubuntu-latest
+  windows-test:
+    name: Windows test
+    runs-on: windows-latest
     steps:
     - uses: actions/checkout@master
-    - name: Get actions page
+    - name: Display config
       run: |
-        curl -s "https://github.com/${{ github.repository }}/actions" --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}'
-        workflow=$(echo "${{ github.workflow }}" | sed -e 's/ /+/g')
-        url="https://github.com/${{ github.repository }}/actions?query=workflow%3A%22${workflow}%22"
-        echo "==== URL: $url"
-        curl "$url" --silent --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}'
-        
-#@@@  windows-test:
-#@@@    name: Windows test
-#@@@    runs-on: windows-latest
-#@@@    steps:
-#@@@    - uses: actions/checkout@master
-#@@@    - name: Display config
-#@@@      run: |
-#@@@        Write-Output 'github.event="${{ github.event }}"'
-#@@@        Write-Output 'github.event_path="${{ github.event_path }}"'
-#@@@        Write-Output 'github.workflow="${{ github.workflow }}"'
-#@@@        Write-Output 'github.actor="${{ github.actor }}"'
-#@@@        Write-Output 'github.repository="${{ github.repository }}"'
-#@@@        Write-Output 'github.event_name="${{ github.event_name }}"'
-#@@@        Write-Output 'github.sha="${{ github.sha }}"'
-#@@@        Write-Output 'github.ref="${{ github.ref }}"'
-#@@@        Write-Output 'github.workspace="${{ github.workspace }}"'
-#@@@        Write-Output 'github.action="${{ github.action }}"'
-#@@@        Write-Output 'job="${{ toJson(job) }}"'
-#@@@        Write-Output 'steps="${{ toJson(steps) }}"'
-#@@@        Write-Output 'runner="${{ toJson(runner) }}"'
-#@@@    - name: Build app
-#@@@      run: |
-#@@@        $version = "1.3.45"
-#@@@        Write-Output "Application version $version" | Out-File app32-$version.txt
-#@@@        Copy-Item app32-$version.txt app64-$version.txt
-#@@@        Write-Output "::set-env name=VERSION::$version"
-#@@@    - name: Upload app 32
-#@@@      uses: actions/upload-artifact@master
-#@@@      with:
-#@@@        name: installer-32
-#@@@        path: app32-${{ env.VERSION }}.txt
-#@@@    - name: Upload app 64
-#@@@      uses: actions/upload-artifact@master
-#@@@      with:
-#@@@        name: installer-64
-#@@@        path: app64-${{ env.VERSION }}.txt
-#@@@    - name: Get artifact URL
-#@@@      run: |
-#@@@        $workflow = "${{ github.workflow }}" -replace ' ','+'
-#@@@        $url = "https://github.com/${{ github.repository }}/actions?query=workflow%3A%22${workflow}%22"
-#@@@        Write-Output "URL: $url"
-#@@@        $tsize = "${{ secrets.GITHUB_TOKEN }}".Length
-#@@@        Write-Output "Token size: $tsize"
-#@@@        $ProgressPreference = 'SilentlyContinue'
-#@@@        $response = Invoke-WebRequest -Uri $url -UseBasicParsing -UserAgent Download -Headers @{'authorization' = 'Bearer ${{ se#@@@crets.GITHUB_TOKEN }}'}
-#@@@        Write-Output "======================================"
-#@@@        $response.Links
-#@@@        Write-Output "======================================"
-#@@@        $response
-#@@@        Write-Output "======================================"
-
-
-#@@@  linux-gcc:
-#@@@    name: Linux with gcc
-#@@@    runs-on: ubuntu-latest
-#@@@    steps:
-#@@@    - uses: actions/checkout@master
-#@@@    - name: install dependencies
-#@@@      run: |
-#@@@        sudo apt update
-#@@@        sudo apt install dos2unix curl tar libpcsclite-dev libcurl4 libcurl4-openssl-dev dpkg-dev
-#@@@    - name: build
-#@@@      run: make -C src
-#@@@    - name: test app
-#@@@      run: src/Release-x86_64/app
-#@@@    - name: test app_dll
-#@@@      run: src/Release-x86_64/app_dll
-#@@@
-#@@@  linux-clang:
-#@@@    name: Linux with clang
-#@@@    runs-on: ubuntu-latest
-#@@@    env:
-#@@@      CC: clang++
-#@@@      CXX: clang++
-#@@@    steps:
-#@@@    - uses: actions/checkout@master
-#@@@    - name: install dependencies
-#@@@      run: |
-#@@@        sudo apt update
-#@@@        sudo apt install dos2unix curl tar libpcsclite-dev libcurl4 libcurl4-openssl-dev dpkg-dev
-#@@@    - name: build
-#@@@      run: make -C src
-#@@@    - name: test app
-#@@@      run: src/Release-x86_64/app
-#@@@    - name: test app_dll
-#@@@      run: src/Release-x86_64/app_dll
-#@@@
-#@@@  macos-clang:
-#@@@    name: macOS with clang
-#@@@    runs-on: macos-latest
-#@@@    env:
-#@@@      CC: clang++
-#@@@      CXX: clang++
-#@@@    steps:
-#@@@    - uses: actions/checkout@master
-#@@@    - name: install dependencies
-#@@@      run: |
-#@@@        brew update
-#@@@        brew install gnu-sed grep dos2unix pcsc-lite
-#@@@    - name: check dependencies
-#@@@      run: |
-#@@@        pwd
-#@@@        gsed --version
-#@@@        ggrep --version
-#@@@        dos2unix --version
-#@@@    - name: build
-#@@@      run: make -C src
-#@@@    - name: test app
-#@@@      run: src/Release-x86_64/app
-#@@@    - name: test app_dll
-#@@@      run: src/Release-x86_64/app_dll
-#@@@
-#@@@  windows-msvc:
-#@@@    name: Windows with VC++
-#@@@    runs-on: windows-latest
-#@@@    steps:
-#@@@    - uses: actions/checkout@master
-#@@@    - name: install nsis
-#@@@      run: |
-#@@@        $NsisUrl = 'http://prdownloads.sourceforge.net/nsis/nsis-3.05-setup.exe?download'
-#@@@        $ProgressPreference = 'SilentlyContinue'
-#@@@        Invoke-WebRequest -UseBasicParsing -Uri $NsisUrl -UserAgent Download -OutFile nsis-setup.exe
-#@@@        Start-Process -FilePath nsis-setup.exe -ArgumentList @("/S") -Wait
-#@@@        Get-ChildItem "C:\Program Files (x86)\NSIS" | Format-Table
-#@@@    - name: install dektec sdk
-#@@@      run: |
-#@@@        dektec/Download-Install-Dtapi.ps1 -NoPause
-#@@@        Get-ChildItem "C:\Program Files (x86)\DekTec" | Format-Table
-#@@@    - name: build 64-bit
-#@@@      run: src/Build.ps1 x64
-#@@@    - name: build 32-bit
-#@@@      run: src/Build.ps1 Win32
-#@@@    - name: test app 64-bit
-#@@@      run: src/Release-x64/app.exe
-#@@@    - name: test app 32-bit
-#@@@      run: src/Release-Win32/app.exe
-#@@@    - name: test app_dll 64-bit
-#@@@      run: src/Release-x64/app_dll.exe
-#@@@    - name: test app_dll 32-bit
-#@@@      run: src/Release-Win32/app_dll.exe
-#@@@    - name: test tsduck exec
-#@@@      run: tsduck/tsversion.exe --version=all
-#@@@    - name: test setting env
-#@@@      run: |
-#@@@          $env:FOO = "foo"
-#@@@          $env:BAR = "bar"
-#@@@          Write-Output "FOO=$($env:FOO) BAR=$($env:BAR)"
-#@@@    - name: test env persistence across steps
-#@@@      run: |
-#@@@          Write-Output "FOO=$($env:FOO) BAR=$($env:BAR)"
-#@@@          echo $env:FOO >bar.txt
-#@@@    - name: Build app
-#@@@      run: |
-#@@@        $version = "1.3.45"
-#@@@        Write-Output "Application version $version" | Out-File app-$version.txt
-#@@@        Write-Output "::set-env name=VERSION::$version"
-#@@@    - name: Upload app
-#@@@      uses: actions/upload-artifact@master
-#@@@      with:
-#@@@        name: installer-${{ env.VERSION }}
-#@@@        path: app-${{ env.VERSION }}.txt
+        Write-Output 'github.event="${{ github.event }}"'
+        Write-Output 'github.event_path="${{ github.event_path }}"'
+        Write-Output 'github.workflow="${{ github.workflow }}"'
+        Write-Output 'github.actor="${{ github.actor }}"'
+        Write-Output 'github.repository="${{ github.repository }}"'
+        Write-Output 'github.event_name="${{ github.event_name }}"'
+        Write-Output 'github.sha="${{ github.sha }}"'
+        Write-Output 'github.ref="${{ github.ref }}"'
+        Write-Output 'github.workspace="${{ github.workspace }}"'
+        Write-Output 'github.action="${{ github.action }}"'
+        Write-Output 'job="${{ toJson(job) }}"'
+        Write-Output 'steps="${{ toJson(steps) }}"'
+        Write-Output 'runner="${{ toJson(runner) }}"'
+    - name: Get previous version
+      uses: actions/download-artifact@v1
+      with:
+        name: version
+    - name: Check version
+        $version = "1.3.45"
+        $previous_version = Get-Content -ErrorAction Ignore version.txt
+        Write-Output "Version: previous: $previous_version, current: $version"
+        Write-Output "::set-env name=VERSION::$version"
+        if ($previous_version -eq $version) {
+            Write-Output "Same version, don't rebuild"
+            Write-Output "::set-env name=SAME_VERSION::true"
+        }
+    - name: Build app
+      if: ${{ env.SAME_VERSION }} != ''
+      run: |
+        $version = "${{ env.VERSION }}"
+        $version | Out-File version.txt
+        "Application 32 version $version" | Out-File app32-$version.txt
+        "Application 64 version $version" | Out-File app64-$version.txt
+    - name: Upload version
+      if: ${{ env.SAME_VERSION }} != ''
+      uses: actions/upload-artifact@master
+      with:
+        name: version
+        path: version.txt
+    - name: Upload app 32
+      if: ${{ env.SAME_VERSION }} != ''
+      uses: actions/upload-artifact@master
+      with:
+        name: installer-32
+        path: app32-${{ env.VERSION }}.txt
+    - name: Upload app 64
+      if: ${{ env.SAME_VERSION }} != ''
+      uses: actions/upload-artifact@master
+      with:
+        name: installer-64
+        path: app64-${{ env.VERSION }}.txt
