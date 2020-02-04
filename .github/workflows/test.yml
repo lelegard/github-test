@@ -30,23 +30,23 @@ jobs:
       if: env.REBUILD == 'false'
       run: Write-Output "Same version"
     - name: Check different version
-      if: env.REBUILD
+      if: env.REBUILD == 'true'
       run: Write-Output "Not the same version"
     - name: Build app
-      if: env.REBUILD
+      if: env.REBUILD == 'true'
       run: |
         $version = "1.3.45"
         Write-Output "::set-env name=VERSION::$version"
         $version | Out-File version.txt
         "Application 64 version $version" | Out-File app64-$version.txt
     - name: Upload version
-      if: env.REBUILD
+      if: env.REBUILD == 'true'
       uses: actions/upload-artifact@master
       with:
         name: version
         path: version.txt
     - name: Upload app 64
-      if: env.REBUILD
+      if: env.REBUILD == 'true'
       uses: actions/upload-artifact@master
       with:
         name: installer-64
