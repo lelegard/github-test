@@ -10,7 +10,7 @@ jobs:
     - uses: actions/checkout@master
     - name: Check cached commit
       id: cache-commit
-      uses: actions/cache@v1
+      uses: actions/cache@master
       with:
         key: ref-${{ github.sha }}
         path: ignored
