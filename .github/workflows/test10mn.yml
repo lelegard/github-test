@@ -18,9 +18,9 @@ jobs:
       if: steps.cache-commit.outputs.cache-hit == 'true'
       run: |
         $date = Get-Date -DisplayHint Time
-        Write-Output "$date: ${{ github.sha }}: Same commit"
+        Write-Output "$date : ${{ github.sha }}: Same commit"
     - name: Check different version
       if: steps.cache-commit.outputs.cache-hit != 'true'
       run: |
         $date = Get-Date -DisplayHint Time
-        Write-Output "$date: ${{ github.sha }}: Not the same commit"
+        Write-Output "$date : ${{ github.sha }}: Not the same commit"
