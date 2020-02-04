@@ -17,7 +17,11 @@ jobs:
         path: ignored
     - name: Check same version
       if: steps.cache-commit.outputs.cache-hit == 'true'
-      run: Write-Output "$(Get-Date -DisplayHint Time): ${{ github.sha }}: Same commit"
+      run: |
+        $date = Get-Date -DisplayHint Time
+        Write-Output "$date: ${{ github.sha }}: Same commit"
     - name: Check different version
       if: steps.cache-commit.outputs.cache-hit != 'true'
-      run: Write-Output Write-Output "$(Get-Date -DisplayHint Time): ${{ github.sha }}: Not the same commit"
+      run: |
+        $date = Get-Date -DisplayHint Time
+        Write-Output "$date: ${{ github.sha }}: Not the same commit"
