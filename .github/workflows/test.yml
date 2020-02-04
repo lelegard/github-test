@@ -6,7 +6,7 @@ jobs:
     runs-on: windows-latest
     steps:
     - run: |
-        git clone --quiet https://github.com/tsduck/tsduck.git
+        git clone --quiet --depth 1 https://github.com/tsduck/tsduck.git
         cd tsduck
         #------------------------------------------------
         $ProgressPreference = 'SilentlyContinue'
