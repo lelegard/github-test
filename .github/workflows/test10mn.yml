@@ -2,7 +2,6 @@ name: 10 mn test
 on:
   schedule:
     - cron:  '*/10 * * * *'
-on: [push]
 jobs:
   windows:
     name: Windows test
