@@ -33,10 +33,10 @@ jobs:
         path: dummy-cache
     - name: Check same version
       if: steps.cache-commit.outputs.cache-hit
-      run: Write-Output "Same commit: ${{ steps.cache-commit.outputs.cache-hit }}"
+      run: Write-Output "Same commit"
     - name: Check different version
       if: steps.cache-commit.outputs.cache-hit != 'true'
-      run: Write-Output "Not the same commit: ${{ steps.cache-commit.outputs.cache-hit }}"
+      run: Write-Output "Not the same commit"
     - name: Build app
       if: steps.cache-commit.outputs.cache-hit == 'false'
       run: |
