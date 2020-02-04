@@ -1,0 +1,53 @@
+name: CI test
+on: [push]
+jobs:
+  windows-test:
+    name: Windows test
+    runs-on: windows-latest
+    steps:
+    - run: |
+        git clone --quiet https://github.com/tsduck/tsduck.git
+        cd tsduck
+        #------------------------------------------------
+        $ProgressPreference = 'SilentlyContinue'
+        try {
+            $response = Invoke-RestMethod https://tsduck.io/download/prerelease/get-versions
+            $response | Format-Custom
+            $remote_version = $response.latest
+        }
+        catch {
+            $remote_version = ""
+        }
+        $major = ((Get-Content src\libtsduck\tsVersion.h | Select-String -Pattern "#define TS_VERSION_MAJOR ").ToString() -replace "#define TS_VERSION_MAJOR *","")
+        $minor = ((Get-Content src\libtsduck\tsVersion.h | Select-String -Pattern "#define TS_VERSION_MINOR ").ToString() -replace "#define TS_VERSION_MINOR *","")
+        $commit = ((Get-Content src\libtsduck\tsVersion.h | Select-String -Pattern "#define TS_COMMIT ").ToString() -replace "#define TS_COMMIT *","")
+        $version = "${major}.${minor}-${commit}"
+        Write-Output "Current version: $version"
+        Write-Output "Latest pre-release version on tsduck.io: $remote_version"
+        $rebuild = ($version -eq $remote_version).ToString().ToLower()
+        Write-Output "::set-env name=REBUILD::$rebuild"
+    - name: Check same version
+      if: env.REBUILD == 'false'
+      run: Write-Output "Same version"
+    - name: Check different version
+      if: env.REBUILD
+      run: Write-Output "Not the same version"
+    - name: Build app
+      if: env.REBUILD
+      run: |
+        $version = "1.3.45"
+        Write-Output "::set-env name=VERSION::$version"
+        $version | Out-File version.txt
+        "Application 64 version $version" | Out-File app64-$version.txt
+    - name: Upload version
+      if: env.REBUILD
+      uses: actions/upload-artifact@master
+      with:
+        name: version
+        path: version.txt
+    - name: Upload app 64
+      if: env.REBUILD
+      uses: actions/upload-artifact@master
+      with:
+        name: installer-64
+        path: app64-${{ env.VERSION }}.txt
