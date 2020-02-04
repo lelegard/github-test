@@ -27,7 +27,7 @@ jobs:
       # Note: this creates one cache key at each rebuild but GitHub
       # removes cache entries that have not been accessed in over 7 days.
       id: cache-commit
-      uses: actions/cache@master
+      uses: actions/cache@v1
       with:
         key: commit-${{ github.sha }}
         path: dummy-cache
