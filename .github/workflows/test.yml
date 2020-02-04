@@ -24,7 +24,7 @@ jobs:
         $version = "${major}.${minor}-${commit}"
         Write-Output "Current version: $version"
         Write-Output "Latest pre-release version on tsduck.io: $remote_version"
-        $rebuild = ($version -eq $remote_version).ToString().ToLower()
+        $rebuild = ($version -ne $remote_version).ToString().ToLower()
         Write-Output "::set-env name=REBUILD::$rebuild"
     - name: Check same version
       if: env.REBUILD == 'false'
