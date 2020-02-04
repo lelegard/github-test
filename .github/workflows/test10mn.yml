@@ -1,0 +1,23 @@
+name: CI test
+on:
+  schedule:
+    - cron:  '*/10 * * * *'
+on: [push]
+jobs:
+  windows:
+    name: Windows test
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Check cached commit
+      id: cache-commit
+      uses: actions/cache@v1
+      with:
+        key: ref-${{ github.sha }}
+        path: ignored
+    - name: Check same version
+      if: steps.cache-commit.outputs.cache-hit == 'true'
+      run: Write-Output "$(Get-Date -DisplayHint Time): ${{ github.sha }}: Same commit"
+    - name: Check different version
+      if: steps.cache-commit.outputs.cache-hit != 'true'
+      run: Write-Output Write-Output "$(Get-Date -DisplayHint Time): ${{ github.sha }}: Not the same commit"
