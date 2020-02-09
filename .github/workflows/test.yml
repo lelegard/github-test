@@ -1,0 +1,20 @@
+name: CI test
+on: [push]
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: install dependencies
+      run: sudo apt install -y curl jq
+    - name: jq version
+      run: jq --version
+    - name: no parameter
+      if: always()
+      run: curl -sL https://tsduck.io/download/prerelease/get-versions | jq
+    - name: dot parameter
+      if: always()
+      run: curl -sL https://tsduck.io/download/prerelease/get-versions | jq .
