@@ -1,18 +1,14 @@
 name: CI test
-on: [push]
+on:
+  schedule:
+    - cron:  '10 4 * * *'
+
 jobs:
-  test:
-    name: Test
+  update:
+    name: Update nightly builds
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
-    - name: install dependencies
+    - name: Install dependencies
       run: sudo apt install -y curl jq
-    - name: jq version
-      run: jq --version
-    - name: no parameter
-      if: always()
-      run: curl -sL https://tsduck.io/download/prerelease/get-versions | jq
-    - name: dot parameter
-      if: always()
-      run: curl -sL https://tsduck.io/download/prerelease/get-versions | jq .
+    - name: Trigger download
+      run: curl -sL -H 'X-Upload-Credentials: ${{ secrets.UPLOAD_CREDENTIALS }}' https://tsduck.io/download/prerelease/get-nightly-builds | jq .
