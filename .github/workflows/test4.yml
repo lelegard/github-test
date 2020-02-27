@@ -1,0 +1,11 @@
+name: CI test
+on: [push]
+jobs:
+  error-test:
+    name: Error test
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        ./success.sh
+        ./failure.sh
+        echo "After failure"
