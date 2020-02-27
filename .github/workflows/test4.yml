@@ -8,5 +8,6 @@ jobs:
     - uses: actions/checkout@master
     - run: |
         ./success.sh
-        ./failure.sh
+        ./failure.sh; status=$?
         echo "After failure"
+        exit $status
