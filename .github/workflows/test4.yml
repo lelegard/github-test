@@ -5,6 +5,7 @@ jobs:
     name: Error test
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@master
     - run: |
         ./success.sh
         ./failure.sh
