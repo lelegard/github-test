@@ -8,12 +8,21 @@ jobs:
     - uses: actions/checkout@master
     - name: Install dependencies
       run: sudo apt install -y doxygen
-    - run: |
+    - name: Check doxygen version
+      run: |
         VERSION=$(doxygen --version)
         AVERSION=(${VERSION//./ })
         IVERSION=$(( ${AVERSION[0]} * 10000 + ${AVERSION[1]} * 100 + ${AVERSION[2]} ))
         echo "Doxygen version: $VERSION - $IVERSION"
         if [[ "$IVERSION" -lt 10818 ]]; then
             echo "Obsolete Doxygen version $VERSION"
+            sudo apt install -y cmake flex bison
+            mkdir -p bin/doxygen/build
+            curl -sL https://github.com/doxygen/doxygen/archive/Release_1_8_20.tar.gz | tar xzf - -C bin/doxygen
+            cd bin/doxygen/build
+            cmake -G "Unix Makefiles" ../doxygen-Release_1_8_20
+            make -j10
+            export PATH=$(cd bin; pwd):$PATH
         fi
-        true
+        which doxygen
+        doxygen --version
