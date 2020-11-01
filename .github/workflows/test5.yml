@@ -1,0 +1,19 @@
+name: CI test
+on: [push]
+jobs:
+  test5:
+    name: Doxygen latest
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Install dependencies
+      run: sudo apt install -y doxygen
+    - run: |
+        VERSION=$(doxygen --version)
+        AVERSION=(${VERSION//./ })
+        IVERSION=$(( ${AVERSION[0]} * 10000 + ${AVERSION[1]} * 100 + ${AVERSION[2]} ))
+        echo "Doxygen version: $VERSION - $IVERSION"
+        if [[ "$IVERSION" -lt 10818 ]]; then
+            echo "Obsolete Doxygen version $VERSION"
+        fi
+        true
