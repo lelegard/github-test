@@ -1,7 +1,7 @@
 ---
 name: Question
 about: Ask a question regarding TSDuck
-title: '[Q]'
+title: "[Q] "
 labels: 'Type: question'
 assignees: ''
 ---

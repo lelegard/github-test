@@ -1,7 +1,7 @@
 ---
 name: Feature request
 about: Suggest an enhancement for TSDuck
-title: "[FEAT]"
+title: "[FEAT] "
 labels: 'Type: enhancement'
 assignees: ''
 ---
