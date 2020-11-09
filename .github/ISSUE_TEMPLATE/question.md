@@ -2,6 +2,7 @@
 name: Question
 about: Ask a question regarding TSDuck
 title: "[Q] "
-labels: 'Type: question'
-assignees: ''
+labels: question
 ---
+
+<!-- Feel free to ask any question about TSDuck -->
