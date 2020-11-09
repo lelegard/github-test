@@ -1,7 +1,11 @@
-[please read the TSDuck [contribution guidelines](https://tsduck.io/doxy/contributing.html) for pull requests]
+<!--
+Please read the TSDuck contribution guidelines for pull requests:
 
-**Related issue (if any):**
+https://tsduck.io/doxy/contributing.html
+-->
 
-**Affected components:**
+#### Related issue (if any):
 
-**Brief description of the proposed changes:**
+#### Affected components:
+
+#### Brief description of the proposed changes:
