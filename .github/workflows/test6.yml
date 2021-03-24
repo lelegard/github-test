@@ -1,0 +1,14 @@
+name: Manual trigger
+
+on:
+  schedule:
+    - cron: '10 4 * * *'
+  workflow_dispatch:
+
+jobs:
+  update:
+    name: Update nightly builds
+    runs-on: ubuntu-latest
+    steps:
+    - name: Test
+      run: date
