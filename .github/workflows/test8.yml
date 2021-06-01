@@ -9,8 +9,9 @@ on:
 
 jobs:
   test:
-    name: Test 7 triggered
+    name: Test 8
     runs-on: ubuntu-latest
     steps:
       - run: |
-        date
+          echo "Workflow 7 completed" 
+          date
