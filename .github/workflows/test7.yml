@@ -1,0 +1,17 @@
+name: Test 7
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+    - name: Build
+      run: date >test.txt
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: test
+        path: test.txt
+        retention-days: 1
