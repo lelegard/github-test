@@ -1,0 +1,16 @@
+name: Test 8
+
+on:
+  workflow_run:
+    workflows:
+      - Test 7
+    types:
+      - completed
+
+jobs:
+  test:
+    name: Test 7 triggered
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+        date
